@@ -185,7 +185,7 @@ weather_df %>%
   geom_point(alpha = .3)
 ```
 
-## Univariate plots(x and y are both varies)
+## Univariate plots(only have 1 varie)
 
 Histograms are really great
 
@@ -232,7 +232,7 @@ Trendy plots :-)
 weather_df %>% 
   ggplot(aes(x = name, y = tmin, fill = name)) +
   geom_violin() + 
-  stat_summary()
+  stat_summary()# also show mean
 ```
 
 Ridge plots -- the most popular plot of 2017

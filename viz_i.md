@@ -335,7 +335,7 @@ weather_df %>%
 
 ![](viz_i_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
-## Univariate plots(x and y are both varies)
+## Univariate plots(only have 1 varie)
 
 Histograms are really great
 
@@ -408,7 +408,7 @@ Trendy plots :-)
 weather_df %>% 
   ggplot(aes(x = name, y = tmin, fill = name)) +
   geom_violin() + 
-  stat_summary()
+  stat_summary()# also show mean
 ```
 
     ## Warning: Removed 15 rows containing non-finite values (stat_ydensity).
