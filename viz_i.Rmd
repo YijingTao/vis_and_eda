@@ -14,7 +14,7 @@ library(ggridges)
 ```{r}
 weather_df = 
   rnoaa::meteo_pull_monitors(
-    c("USW00094728", "USC00519397", "USS0023B17S"),
+    c("USW00094728", "USC00519397", "USS0023B17S"),#pick out 2 datasets
     var = c("PRCP", "TMIN", "TMAX"), #download from the internet
     date_min = "2017-01-01",
     date_max = "2017-12-31") %>%
@@ -31,6 +31,26 @@ weather_df
 ```
 
 ## Scatterplots
+
+tmax vs tmin
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point()#relationship between tmin and tmax
+```
+
+you can save ggplots
+
+```{r}
+ggp_tmax_tmin = 
+  weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point()
+
+ggp_tmax_tmin
+#ggsave()
+```
 
 create my first scatterplot ever
 
@@ -84,9 +104,10 @@ What about the `aes` placement..?
 
 ```{r}
 weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax))
-  geom_point(aes(color = name))
-  geom_smooth()#color only apply to point, and smooth will not get the color from point
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point(aes(color = name), alpha = .3) +#alpha = Í¸Ã÷¶È
+  geom_smooth(se = FALSE) + #color only apply to point, and smooth will not get the color from point
+  facet_grid(. ~ name)#devide 3 name dataframe into 3 separate form
 ```
 
 Let's facet somenthings!
@@ -97,6 +118,35 @@ weather_df %>%
   geom_point(alpha = .2,size = .3) +#size is the size of the points
   geom_smooth(se = FALSE) +
   facet_grid(. ~ name)#dot means don't create rows
+```
+
+let's make one more scatterplot.
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = date, y = tmax, size = prcp)) +
+  geom_point(alpha = .3) +
+  facet_grid(. ~ name) +
+  geom_smooth(se = FALSE)
+```
+
+##use data manipulation as part of this
+
+```{r}
+weather_df %>% 
+  filter(name == "CentralPark_NY") %>% 
+  mutate(
+    tmax = tmax * (9 / 5) + 32,
+    tmin = tmin * (9 / 5) + 32
+  ) %>% 
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point()
+```
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_hex() 
 ```
 
 Let's  combine some elements and try a new plot
