@@ -18,6 +18,13 @@ library(tidyverse)
 
 ``` r
 library(ggridges)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6
+,
+out.width = "90%"
+)
 ```
 
 ## Load the weather data
@@ -93,7 +100,7 @@ weather_df %>%
 
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-2-1.png" width="90%" />
 
 you can save ggplots
 
@@ -108,7 +115,7 @@ ggp_tmax_tmin
 
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-3-1.png" width="90%" />
 
 ``` r
 #ggsave()
@@ -123,7 +130,7 @@ ggplot(weather_df,aes(x = tmin, y = tmax)) +
 
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-4-1.png" width="90%" />
 
 New approach, same plot
 
@@ -149,7 +156,7 @@ weather_df %>% #add sth like filter or mutate is ok
 
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-6-1.png" width="90%" />
 
 \#\#Opyions to read\_csv
 
@@ -195,7 +202,7 @@ weather_df %>%
 
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-9-1.png" width="90%" />
 
 What about the `aes` placement..?
 
@@ -213,7 +220,7 @@ weather_df %>%
 
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-10-1.png" width="90%" />
 
 Let’s facet somenthings!
 
@@ -231,7 +238,7 @@ weather_df %>%
 
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-11-1.png" width="90%" />
 
 let’s make one more scatterplot.
 
@@ -249,7 +256,7 @@ weather_df %>%
 
     ## Warning: Removed 3 rows containing missing values (geom_point).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-12-1.png" width="90%" />
 
 \#\#use data manipulation as part of this
 
@@ -264,7 +271,7 @@ weather_df %>%
   geom_point()
 ```
 
-![](viz_i_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-13-1.png" width="90%" />
 
 ``` r
 weather_df %>% 
@@ -274,7 +281,7 @@ weather_df %>%
 
     ## Warning: Removed 15 rows containing non-finite values (stat_binhex).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-14-1.png" width="90%" />
 
 Let’s combine some elements and try a new plot
 
@@ -292,7 +299,7 @@ weather_df %>%
 
     ## Warning: Removed 3 rows containing missing values (geom_point).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-15-1.png" width="90%" />
 
 ## somr small notes
 
@@ -308,7 +315,7 @@ weather_df %>%
 
     ## Warning: Removed 15 rows containing non-finite values (stat_smooth).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-16-1.png" width="90%" />
 
 You can use a neat geom!
 
@@ -320,7 +327,7 @@ weather_df %>%
 
     ## Warning: Removed 15 rows containing non-finite values (stat_binhex).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-17-1.png" width="90%" />
 
 ``` r
 weather_df %>% 
@@ -333,7 +340,7 @@ weather_df %>%
 
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-18-1.png" width="90%" />
 
 ## Univariate plots(only have 1 varie)
 
@@ -349,7 +356,7 @@ weather_df %>%
 
     ## Warning: Removed 15 rows containing non-finite values (stat_bin).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-19-1.png" width="90%" />
 
 can we add color ..
 
@@ -363,7 +370,7 @@ weather_df %>%
 
     ## Warning: Removed 15 rows containing non-finite values (stat_bin).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-20-1.png" width="90%" />
 
 ``` r
 weather_df %>% 
@@ -376,7 +383,7 @@ weather_df %>%
 
     ## Warning: Removed 15 rows containing non-finite values (stat_bin).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-21-1.png" width="90%" />
 
 Let’s try a new geometry!
 
@@ -388,7 +395,7 @@ weather_df %>%
 
     ## Warning: Removed 15 rows containing non-finite values (stat_density).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-22-1.png" width="90%" />
 
 What about box plots??
 
@@ -400,7 +407,7 @@ weather_df %>%
 
     ## Warning: Removed 15 rows containing non-finite values (stat_boxplot).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-23-1.png" width="90%" />
 
 Trendy plots :-)
 
@@ -417,7 +424,7 @@ weather_df %>%
 
     ## No summary function supplied, defaulting to `mean_se()`
 
-![](viz_i_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-24-1.png" width="90%" />
 
 Ridge plots – the most popular plot of 2017
 
@@ -431,7 +438,7 @@ geom_density_ridges()
 
     ## Warning: Removed 15 rows containing non-finite values (stat_density_ridges).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-25-1.png" width="90%" />
 
 ## Save and Embed
 
@@ -445,7 +452,7 @@ weather_df %>%
 
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
-![](viz_i_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+<img src="viz_i_files/figure-gfm/unnamed-chunk-26-1.png" width="90%" />
 
 What about embedding…
 
