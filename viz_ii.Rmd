@@ -1,18 +1,12 @@
 ---
-title: "ggplot 1"
+title: "ggplot 2"
 output: github_document
 ---
 
 ```{r, setup}
 library(tidyverse)
-library(ggridges)
-
-knitr::opts_chunk$set(
-  fig.width = 6,
-  fig.asp = .6
-,
-out.width = "90%"
-)
+library(patchwork)
+library(viridis)
 ```
 
 
@@ -37,237 +31,307 @@ weather_df =
 weather_df
 ```
 
-## Scatterplots
-
-tmax vs tmin
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax)) +
-  geom_point()#relationship between tmin and tmax
-```
-
-you can save ggplots
-
-```{r}
-ggp_tmax_tmin = 
-  weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax)) +
-  geom_point()
-
-ggp_tmax_tmin
-#ggsave()
-```
-
-create my first scatterplot ever
-
-```{r}
-ggplot(weather_df,aes(x = tmin, y = tmax)) +
-  geom_point()
-```
-
-New approach, same plot
-
-```{r}
-tail(weather_df)
-```
-
-```{r}
-weather_df %>% #add sth like filter or mutate is ok
-  ggplot(aes(x = tmin, y = tmax)) +
-  geom_point()
-```
-
-##Opyions to read_csv
-
-```{r}
-litters_df = read_csv("./data/FAS_litters.csv")
-```
-
-Save and edit a plot object
-
-```{r}
-weather_plot = 
-  weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax))#save the plot in the df
-
-weather_plot = geom_point()
-```
-
-
-## Advanced scatterplot
-
-Start with the same one and make it fancy
+## Start with a familiar one
 
 ```{r}
 weather_df %>% 
   ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5)
+```
+sometime people might not know what's the meaning of the x and y
+
+## Labels(best to do when show sb else)
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Mininum daily temperature(c)",
+    y = "Maximum daily temperature(c)",##add label to the whole plot and xy axis
+    caption = "Data from rnoaa package; temperatures in 2017"#add caption(zhushi)
+  )# make it easier for other people to use
+```
+
+## Scales (eg. change x = tmax to x = log(tmax)...)
+
+start with the same plot
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Mininum daily temperature(c)",
+    y = "Maximum daily temperature(c)",##add label to the whole plot and xy axis
+    caption = "Data from rnoaa package; temperatures in 2017"#add caption(zhushi)
+  ) +
+  scale_x_continuous( #set the plot first, then begin to scale
+    breaks = c(-15,0,15),#change numbers showed on x axis
+    labels = c("-15 c","0","15")#change the name of the 3 points on x axis we set before
+  ) +
+  scale_y_continuous(
+    trans = "sqrt",
+    position = "right"#change the position of the y axis
+  )
+```
+
+Look at color scales
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Mininum daily temperature(c)",
+    y = "Maximum daily temperature(c)",##add label to the whole plot and xy axis
+    caption = "Data from rnoaa package; temperatures in 2017"#add caption(zhushi)
+  ) +
+  scale_color_hue(#many other kinds of functions other than "hue"
+    name = "location", 
+    h = c(100,300))#set the color of the points
+```
+
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Mininum daily temperature(c)",
+    y = "Maximum daily temperature(c)",##add label to the whole plot and xy axis
+    caption = "Data from rnoaa package; temperatures in 2017"#add caption(zhushi)
+  ) +
+  viridis::scale_color_viridis(
+    name = "location",
+    discrete = TRUE)#tell it that is is a discrete varieble, or use "scale_color_viridis_d() insteading of "scale_color_viridis()"
+```
+
+
+## Themes 
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Mininum daily temperature(c)",
+    y = "Maximum daily temperature(c)",##add label to the whole plot and xy axis
+    caption = "Data from rnoaa package; temperatures in 2017"#add caption(zhushi)
+  ) +
+  viridis::scale_color_viridis(
+    name = "location",
+    discrete = TRUE) +#tell it that is is a discrete varieble
+  theme(legend.position = "bottom")#put legend in the bottom
+theme_bw()
+```
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Mininum daily temperature(c)",
+    y = "Maximum daily temperature(c)",##add label to the whole plot and xy axis
+    caption = "Data from rnoaa package; temperatures in 2017"#add caption(zhushi)
+  ) +
+  scale_color_viridis_d() +
+theme_bw()+
+  theme(legend.position = "bottom")#put legend in the bottom
+```
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Mininum daily temperature(c)",
+    y = "Maximum daily temperature(c)",##add label to the whole plot and xy axis
+    caption = "Data from rnoaa package; temperatures in 2017"#add caption(zhushi)
+  ) +
+  scale_color_viridis_d() +
+theme_minimal()+
+  theme(legend.position = "bottom")#put legend in the bottom
+```
+
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Mininum daily temperature(c)",
+    y = "Maximum daily temperature(c)",##add label to the whole plot and xy axis
+    caption = "Data from rnoaa package; temperatures in 2017"#add caption(zhushi)
+  ) +
+  viridis::scale_color_viridis(
+    name = "location",
+    discrete = TRUE) +#tell it that is is a discrete varieble
+ #***** ggthemes::thems_excel()
+```
+
+##setting options(set every time the same)
+
+```{r, eval = FALSE}
+library(tidyverse)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.comtinuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_color_viridis_d
+scale
+```
+
+
+##data args in `geom`
+
+```{r}
+#create 2 sub dataframes
+central_park_df = 
+  weather_df %>% 
+  filter(name == "CentralPark_NY")
+
+wakiki = 
+  weather_df %>% 
+  filter(name == "Waikiki_HA")
+
+ggplot(data = wakiki, aes(x = date, y = tmax, color = name)) +
   geom_point() +
-  geom_smooth(se = FALSE)#se = limit
+  geom_line(data = central_park_df)
 ```
 
-What about the `aes` placement..?
+##`patchwork package`
 
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax)) +
-  geom_point(aes(color = name), alpha = .3) +#alpha = Í¸Ã÷¶È
-  geom_smooth(se = FALSE) + #color only apply to point, and smooth will not get the color from point
-  facet_grid(. ~ name)#devide 3 name dataframe into 3 separate form
-```
-
-Let's facet somenthings!
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax, color = name)) + 
-  geom_point(alpha = .2,size = .3) +#size is the size of the points
-  geom_smooth(se = FALSE) +
-  facet_grid(. ~ name)#dot means don't create rows
-```
-
-let's make one more scatterplot.
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = date, y = tmax, size = prcp)) +
-  geom_point(alpha = .3) +
-  facet_grid(. ~ name) +
-  geom_smooth(se = FALSE)
-```
-
-##use data manipulation as part of this
-
-```{r}
-weather_df %>% 
-  filter(name == "CentralPark_NY") %>% 
-  mutate(
-    tmax = tmax * (9 / 5) + 32,
-    tmin = tmin * (9 / 5) + 32
-  ) %>% 
-  ggplot(aes(x = tmin, y = tmax)) +
-  geom_point()
-```
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax)) +
-  geom_hex() 
-```
-
-Let's  combine some elements and try a new plot
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = date, y = tmax, color = name)) +
-  geom_point(aes(size = prcp), alpha = .5) + 
-  geom_smooth(se = FALSE) +
-  facet_grid(. ~ name)
-```
-
-
-## somr small notes
-
-How many geoms have to exist?
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax, color = name)) +
-  geom_smooth(se = FALSE)
-```
-
-You can use a neat geom!
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax)) +
-  geom_hex()
-```
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax)) +
-  geom_density2d() +
-  geom_point(alpha = .3)
-```
-
-## Univariate plots(only have 1 varie)
-
-Histograms are really great
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin)) +
-  geom_histogram()
-```
-
-can we add color ..
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin, fill = name)) +#color = color is only on the outline, fill = color also filled in
-  geom_histogram(position = "dodge")
-```
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin, fill = name)) +#color = color is only on the outline, fill = color also filled in
-  geom_histogram()+
-  facet_grid(. ~name)
-```
-
-Let's try a new geometry!
+remember faceting?
 
 ```{r}
 weather_df %>% 
   ggplot(aes(x = tmin, fill = name)) +
-  geom_density(alpha = .3, adjust = .5)
+  geom_density(alpha = .5) +
+  facet_grid(. ~ name)
 ```
 
-What about box plots??
+what happens when you want multipanel plots but can't facet ...?
+
+```{r}
+tmax_tmin_p = 
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  theme(legend.position = "name")
+
+prcp_dens_plot = 
+  weather_df %>% 
+  filter(prcp > 0) %>% #only keep the >0 part
+  ggplot(aes(x = prcp, fill = name)) +
+  geom_density(alpha = .5)
+
+tmax_data_plot = 
+  weather_df %>% 
+  ggplot(aes(x = date, y = tmax, coor = name)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  theme(legend.position = "none")
+
+(prcp_dens_plot + tmax_data_plot) / tmax_tmin_p
+```
+
+##data manipulation
+control your factors.
 
 ```{r}
 weather_df %>% 
-  ggplot(aes(x = name, y = tmin)) +
+  mutate(
+    name = fct_reorder(name, tmax)
+  ) %>% #tidy your data before making the plots
+  ggplot(aes(x = name, y = tmax, fill = name)) +
   geom_boxplot()
 ```
 
-Trendy plots :-)
+```{r}
+weather_df %>% 
+  mutate(
+    name = factor(name),#change name from charecter to factor
+    name = forcats::fct_relevel(name,c("Waikiki_HA"))
+  ) %>% 
+  ggplot(aes(x = name, y = tmax, fill = name)) +
+  geom_violin(alpha = .5)##color is not needed here
+```
+
+What if I wanted densities for tmin and tmax simultaneously?
 
 ```{r}
 weather_df %>% 
-  ggplot(aes(x = name, y = tmin, fill = name)) +
-  geom_violin() + 
-  stat_summary()# also show mean
+  pivot_longer(
+    tmax:tmin,#get 2 curves at the same time 
+    names_to = "observation",
+    values_to = "temperatures"
+  ) %>% 
+  ggplot(aes(x = temperatures, fill = observation)) +
+  geom_density(alpha = .5) +
+  facet_grid(. ~ name)
 ```
-
-Ridge plots -- the most popular plot of 2017
 
 ```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin, y = name)) +
-geom_density_ridges()
+pulse_df = 
+  haven::read_sas("data/public_pulse_data.sas7bdat") %>% 
+  janitor::clean_names() %>% ##many na
+  pivot_longer(
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit",
+    values_to = "bdi",
+    names_prefix = "bdi_score_"
+  ) %>% 
+  mutate(visit = recode(visit, "bl" = "00m")) 
+
+pulse_df %>% 
+  ggplot(aes(x = visit, y = bdi)) +
+  geom_boxplot()
+
+pulse_df %>% #keep track each person's change
+  ggplot(aes(x = visit, y = bdi)) +
+  geom_point(size = .2)+
+  geom_line(aes(group = id))
 ```
 
-## Save and Embed
 
-Let's save a scatterplot
+## revisit the pups
+
+Data from the FAS study.
 
 ```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax,color = name)) +
-  geom_point(alpha = .5)
+pup_data = 
+  read_csv("./data/FAS_pups.csv") %>% 
+  janitor::clean_names() %>% 
+  mutate(sex = recode(sex, `1` = "male", `2` = "female"))
 
+litters_data = 
+  read_csv("./data/FAS_litters.csv") %>% 
+  janitor::clean_names() %>% 
+  seperate(group, into = c("dose", "day_of_tx"),sep = 3)
+
+fas_data = left_join(pup_data, litters_data, by = "litter_number")
+
+fas_data %>% 
+  ggplot(aes(x = dose, y = pd_ears)) +
+  geom_violin() +
+  facet_grid(. ~ day_of_tx ~ outcome)
 ```
 
-What about embedding...
-
-```{r}
-weather_plot
-```
-
-embed at different size
-```{r, fig.width=12, fig.height=6}
-weather_plot
-```
